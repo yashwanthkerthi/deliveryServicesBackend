@@ -3,6 +3,7 @@ export interface UserSignupDetailsDTO {
   lastName: string;
   email: string;
   password: string;
+  mobileNumber: string;
 }
 
 export interface UserLoginDetailsDTO {
@@ -31,6 +32,8 @@ export interface CreationIUsersDTO {
   last_name: string;
   email: string;
   password: string;
+  mobile_number: string;
+  user_role: number;
 }
 
 // export interface UserSignupDetailsDTO {
@@ -40,14 +43,4 @@ export interface CreationIUsersDTO {
 //   password: string;
 // }
 
-export interface ResponseDto {
-  status?: boolean;
-  data?: any;
-  message?: string;
-  error?: any;
-  details?: string;
-  statusCode?: number;
-  errorMessage?: any;
-  errorDetails?: any;
-}
 

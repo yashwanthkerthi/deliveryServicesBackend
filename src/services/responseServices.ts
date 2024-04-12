@@ -85,12 +85,16 @@ export const getResponseMessage = (message: string) => {
     INVALID_EMAIL_OR_PASSWORD: "Please Provide Email and Password",
     INVALID_PASSWORD: "Invalid Password",
     LOGIN_SUCCESS: "Login Success",
-    APPOINTMENT_OVERLAPPED:
-      "Someone has already booked appointment in this time",
-    APPOINTMENT_CREATION_ERROR: "Error ocuured during appointment creation",
-    APPOINTMENT_CREATED: "Appointment booked successfully",
     REQUIRED_TOKEN: "Token is Required",
     REQUIRED_VALID_TOKEN: "Valid token is required",
+    CANNOT_FIND_TRACKING_ID: "cannot find tracking id in DB",
+    STATUS_UPDATED: "Order status updated successfully",
+    ADDED_PICKUP_DETAILS: "Successfully added pickup details",
+    ORDER_ADDRESS_ADDED: "Order address added successfully",
+    ORDER_ADDRESS_NOT_ADDED: "Order address not added",
+    ORDER_SUCCESS: "Order placed successfully",
+    ORDER_DETAILS_SUBMITTED: "Order details submitted successfully",
+    ORDER_DETAILS_SUBMISSION_FAILED: "Order details submission failed",
   };
 
   return messageConstant[message] || null;

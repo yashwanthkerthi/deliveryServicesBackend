@@ -10,6 +10,8 @@ import jwt from "jsonwebtoken";
 import * as userServices from "./User.services";
 import { UserLoginDetailsDTO, UserSignupDetailsDTO } from "./User.dto";
 import { schemaValidation } from "@utils/helperFunctions";
+import { sendRoleBits } from "@utils/helperFunctions";
+import { Roles } from "@dtos/reusableDtos";
 
 export const SignUp = async (req: Request, res: Response): Promise<any> => {
   try {
@@ -20,6 +22,8 @@ export const SignUp = async (req: Request, res: Response): Promise<any> => {
       lastName: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().required(),
+      mobileNumber: Joi.string().required(),
+      role: Joi.string().required(),
     });
     const validateResult: ResponseDto = await schemaValidation(
       userDetails,
@@ -31,7 +35,12 @@ export const SignUp = async (req: Request, res: Response): Promise<any> => {
       response = sendResponse(validateResult);
       return res.json(response);
     } else {
-      response = await userServices.SignUp(userDetails);
+      const userRoleBits: ResponseDto = await sendRoleBits(Roles.USER);
+      if (!userRoleBits.status) {
+        return userRoleBits;
+      }
+      const user_bits: number = userRoleBits.data;
+      response = await userServices.SignUp(userDetails, user_bits);
       response = sendResponse(response);
       return res.json(response);
     }

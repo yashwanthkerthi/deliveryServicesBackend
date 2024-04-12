@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable("boxdetails", {
+    await queryInterface.createTable("orderdetails", {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -22,27 +22,25 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      shipment_value: {
+      sender_name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      trackingNumber: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      senderName: {
+      recipient_name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      recipientName: {
-        type: DataTypes.STRING,
+      user_id: {
+        type: DataTypes.INTEGER,
         allowNull: false,
-      },
-      status: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: 'Pending', // Example default status
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+        references: {
+          model: {
+            tableName: "users",
+          },
+          key: "id",
+        },
       },
       created_at: {
         type: DataTypes.DATE,
@@ -58,6 +56,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("boxdetails");
+    await queryInterface.dropTable("orderdetails");
   },
 };
+

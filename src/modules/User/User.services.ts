@@ -6,20 +6,22 @@ import {
   getResponseMessage,
   setSuccessResponse,
 } from "@services/responseServices";
+import { ResponseDto } from "@dtos/reusableDtos";
 import {
   UserLoginDetailsDTO,
   UserSignupDetailsDTO,
-  ResponseDto,
   UserJwtDetailsDTO,
 } from "./User.dto";
 import { generateAccessToken } from "@utils/helperFunctions";
 
 export const SignUp = async (
-  userSignupDetails: UserSignupDetailsDTO
+  userSignupDetails: UserSignupDetailsDTO,
+  roleBits: number
 ): Promise<ResponseDto> => {
   try {
     let response: ResponseDto;
-    const { firstName, lastName, email, password } = userSignupDetails;
+    const { firstName, lastName, email, password, mobileNumber } =
+      userSignupDetails;
     const isUserPresentInDb = await UsersModel.findOne({
       where: { email },
     });
@@ -40,6 +42,8 @@ export const SignUp = async (
       last_name: lastName,
       email,
       password: hashedPassword,
+      mobile_number: mobileNumber,
+      user_role: roleBits,
     });
     if (!createCandidateInDb) {
       return (response = setErrorResponse({
@@ -52,6 +56,7 @@ export const SignUp = async (
       email,
       first_name: firstName,
       last_name: lastName,
+      user_role: roleBits,
       jwtToken,
     };
 

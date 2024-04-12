@@ -3,51 +3,22 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable("address", {
+    await queryInterface.createTable("pickupdetails", {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true,
       },
-      from_address: {
-        type: DataTypes.STRING,
+      date: {
+        type: DataTypes.DATE,
         allowNull: false,
       },
-
-      from_email: {
-        type: DataTypes.STRING,
+      time: {
+        type: DataTypes.TIME,
         allowNull: false,
       },
-      from_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      from_mobile_number: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      from_pincode: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      to_email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      to_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      to_mobile_number: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      to_pincode: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      to_address: {
+      location: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -65,7 +36,7 @@ module.exports = {
       },
       order_id: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
         references: {
@@ -89,7 +60,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("address");
+    await queryInterface.dropTable("pickupdetails");
   },
 };
 

@@ -1,11 +1,13 @@
-import { IUsers, CreationIUsersDTO } from "./User.dto";
 import { sequelize } from "@loaders/database";
-import { TrackShipmentModel } from "@modules/TrackShipment/TrackShipment.model";
 import { DataTypes, ModelDefined } from "sequelize";
+import { CreationIorderDetailsDTO, IOrders } from "./OrderDetails.dto";
+import { UsersModel } from "@modules/User/User.model";
 
-
-export const UsersModel: ModelDefined<IUsers, CreationIUsersDTO> = sequelize.define(
-  "users",
+export const OrderDetailsModel: ModelDefined<
+  IOrders,
+  CreationIorderDetailsDTO
+> = sequelize.define(
+  "orderdetails",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -13,29 +15,37 @@ export const UsersModel: ModelDefined<IUsers, CreationIUsersDTO> = sequelize.def
       allowNull: false,
       autoIncrement: true,
     },
-    first_name: {
+    weight: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    last_name: {
+    content: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    email: {
+    measurement: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    password: {
+    sender_name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    mobile_number: {
+    recipient_name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    user_role: {
-      type: DataTypes.SMALLINT,
+    user_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+      references: {
+        model: {
+          tableName: "users",
+        },
+        key: "id",
+      },
     },
     created_at: {
       type: DataTypes.DATE,
@@ -49,10 +59,21 @@ export const UsersModel: ModelDefined<IUsers, CreationIUsersDTO> = sequelize.def
     },
   },
   {
-    tableName: "users",
+    tableName: "orderdetails",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
-  },
+  }
 );
 
+UsersModel.hasMany(OrderDetailsModel, {
+  foreignKey: "user_id",
+  as: "userorderdetails",
+  constraints: false,
+});
+
+OrderDetailsModel.belongsTo(UsersModel, {
+  foreignKey: "user_id",
+  as: "orderdetailsofuser",
+  constraints: false,
+});

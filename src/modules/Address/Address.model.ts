@@ -1,9 +1,13 @@
-"use strict";
+import { sequelize } from "@loaders/database";
+import { DataTypes, ModelDefined } from "sequelize";
+import { Address, CreationAddressDTO } from "./Address.dto";
+import { UsersModel } from "@modules/User/User.model";
+import { OrderDetailsModel } from "@modules/OrderDetails/OrderDetails.model";
 
-/** @type {import('sequelize-cli').Migration} */
-module.exports = {
-  async up(queryInterface, DataTypes) {
-    await queryInterface.createTable("address", {
+export const userOrderAddressModel: ModelDefined<Address, CreationAddressDTO> =
+  sequelize.define(
+    "address",
+    {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -65,7 +69,7 @@ module.exports = {
       },
       order_id: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
         references: {
@@ -85,11 +89,35 @@ module.exports = {
         allowNull: true,
         defaultValue: DataTypes.NOW,
       },
-    });
-  },
+    },
+    {
+      tableName: "address",
+      timestamps: true,
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    }
+  );
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("address");
-  },
-};
+UsersModel.hasMany(userOrderAddressModel, {
+  foreignKey: "user_id",
+  as: "userorderaddress",
+  constraints: false,
+});
 
+userOrderAddressModel.belongsTo(UsersModel, {
+  foreignKey: "user_id",
+  as: "userorderaddressofusers",
+  constraints: false,
+});
+
+OrderDetailsModel.hasOne(userOrderAddressModel, {
+  foreignKey: "order_id",
+  as: "orderdetailsofuserorder",
+  constraints: false,
+});
+
+userOrderAddressModel.belongsTo(OrderDetailsModel, {
+  foreignKey: "order_id",
+  as: "userorderaddressorderdetails",
+  constraints: false,
+});

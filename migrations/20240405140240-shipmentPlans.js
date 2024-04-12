@@ -4,27 +4,39 @@
 module.exports = {
   async up(queryInterface, DataTypes) {
     await queryInterface.createTable("shipmentplans", {
-      id: {
+      plan_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true,
       },
-      name: {
+      plan_name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      description: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      price: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-      },
-      duration: {
+      user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+        references: {
+          model: {
+            tableName: "users",
+          },
+          key: "id",
+        },
+      },
+      order_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+        references: {
+          model: {
+            tableName: "orderdetails",
+          },
+          key: "id",
+        },
       },
       created_at: {
         type: DataTypes.DATE,
@@ -43,3 +55,4 @@ module.exports = {
     await queryInterface.dropTable("shipmentplans");
   },
 };
+
